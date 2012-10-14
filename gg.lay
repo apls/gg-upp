@@ -1,0 +1,7 @@
+LAYOUT(GameGateLayout, 592, 368)
+	ITEM(Button, start, SetLabel(t_("Start")).SetFont(StdFontZ(32).Bold()).LeftPosZ(188, 208).TopPosZ(40, 72))
+	ITEM(EditString, pwd, SetFont(StdFontZ(30)).HSizePosZ(152, 156).TopPosZ(168, 32))
+	ITEM(Button, skip, SetLabel(t_("Skip")).SetFont(StdFontZ(24)).LeftPosZ(152, 120).TopPosZ(224, 36))
+	ITEM(Button, option, SetLabel(t_("Option")).SetFont(StdFontZ(24)).LeftPosZ(320, 120).TopPosZ(224, 36))
+END_LAYOUT
+

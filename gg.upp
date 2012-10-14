@@ -1,0 +1,14 @@
+description "Game gate to kids\377";
+
+uses
+	CtrlLib;
+
+file
+	gg.h,
+	main.cpp,
+	gg.lay,
+	gg.iml;
+
+mainconfig
+	"" = "GUI";
+
