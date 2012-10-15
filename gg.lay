@@ -5,3 +5,13 @@ LAYOUT(GameGateLayout, 592, 368)
 	ITEM(Button, option, SetLabel(t_("Option")).SetFont(StdFontZ(24)).LeftPosZ(320, 120).TopPosZ(224, 36))
 END_LAYOUT
 
+LAYOUT(MathTestLayout, 676, 408)
+	ITEM(ProgressIndicator, progress, LeftPosZ(72, 520).TopPosZ(24, 24))
+	ITEM(Button, option0, LeftPosZ(44, 100).TopPosZ(300, 76))
+	ITEM(Button, option1, LeftPosZ(164, 100).TopPosZ(300, 76))
+	ITEM(Button, option2, LeftPosZ(284, 100).TopPosZ(300, 76))
+	ITEM(Button, option3, LeftPosZ(404, 100).TopPosZ(300, 76))
+	ITEM(Button, option4, LeftPosZ(524, 100).TopPosZ(300, 76))
+	ITEM(Label, formula, SetLabel(t_("1 + 1 = ?")).SetAlign(ALIGN_CENTER).SetFont(StdFontZ(64).Bold()).LeftPosZ(124, 412).TopPosZ(140, 84))
+END_LAYOUT
+
