@@ -4,19 +4,68 @@
 #define IMAGEFILE <gg/gg.iml>
 #include <Draw/iml_source.h>
 
-GameGate::GameGate()
-{
-	CtrlLayout(*this, "Window title");
-}
 
 GUI_APP_MAIN
 {
 	GameGate().Run();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+GameGate::GameGate()
+{
+	CtrlLayout(*this, "Window title");
+	
+	//mt.Transparent(false);
+	//Add(mt);
+	//mt.SizePos();
+	//mt.Hide();
+	skip.Disable();
+	conf.Disable();
+	skip << THISBACK(Skip);
+	conf << THISBACK(Conf);
+	pwd << THISBACK(Pwd);
+	start << THISBACK(Start);
+}
 
+void GameGate::Serialize(Stream& s)
+{
+	int version = 0;
+	s / version;
+	s / password;
+	SerializePlacement(s);
+	//sclist.Serialize(s);
+}
+
+void GameGate::Start()
+{
+	MathTest mt;
+	//mt.Open();
+	mt.Title("Math test");
+	int i = mt.Execute();//.RunAppModal();
+	//mt.Show();
+}
+
+void GameGate::Conf()
+{
+}
+
+void GameGate::Skip()
+{
+	Close();
+}
+
+void GameGate::Pwd()
+{
+	bool b = password == pwd;
+	skip.Enable(b);
+	conf.Enable(b);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 MathTest::MathTest()
 {
+	CtrlLayout(*this, "Math test");
+	
 	level   = 10;
 	time    = 15;
 	count   = 10;
@@ -25,15 +74,18 @@ MathTest::MathTest()
 	option2.WhenPush = THISBACK1(Select, 2);
 	option3.WhenPush = THISBACK1(Select, 3);
 	option4.WhenPush = THISBACK1(Select, 4);
+	restart << THISBACK(Start);
+	progress.Set(0, count);
 }
 
-void MathTest::Begin()
+void MathTest::Start()
 {
+//	KillTimeCallback(TID_LOADTOPICS);
 	InitTopics();
 	LoadTopics();
 }
 
-void MathTest::Select(int i)d
+void MathTest::Select(int i)
 {
 	if(i < 5 && i >= 0)
 	{
@@ -42,7 +94,8 @@ void MathTest::Select(int i)d
 			Correct();
 		else
 			Wrong();
-		SetTimeCallback(1000, THISBACK(LoadTopics));
+		//SetTimeCallback(1000, THISBACK(LoadTopics));//, TID_LOADTOPICS);
+		LoadTopics();
 	}
 }
 
@@ -55,13 +108,12 @@ void MathTest::Correct()
 void MathTest::Wrong()
 {
 	//PromptOK("Answered correctly");
-	formula.SetImage(Images::Correct());
+	formula.SetImage(Images::Wrong());
 }
-
 
 void MathTest::InitTopics()
 {
-	current = -1;
+	current = -1; 
 	mts.SetCount(count);
 	
 	for(int i = 0; i < count; i++)
@@ -77,7 +129,8 @@ void MathTest::InitTopics()
 			a = min(a, b);
 			b = c - a;
 			break;
-		case 1: // minus
+		//case 1: // minus
+		default:
 			c = max(a, b);
 			b = min(a, b);
 			a = c;
@@ -97,12 +150,20 @@ void MathTest::InitTopics()
 
 void MathTest::LoadTopics()
 {
+	//KillTimeCallback();
 	current++;
+	if(current == count)
+	{
+		//Break(IDOK);
+		return;
+	}
+	
 	Topic& t = mts[current];
 	
 	String s;
-	s << t.a << (t.op ? '-' : '+') << t.b << "=?";
+	s << t.a << (t.op ? '-' : '+') << t.b << "=";
 	formula.SetText(s);
+	formula.SetImage(Images::Question()); // ?
 	
 	option0.SetLabel(IntStr(t.opt[0]));
 	option1.SetLabel(IntStr(t.opt[1]));
@@ -110,5 +171,5 @@ void MathTest::LoadTopics()
 	option3.SetLabel(IntStr(t.opt[3]));
 	option4.SetLabel(IntStr(t.opt[4]));
 	
-	progress.Set(current, count);
+	progress.Set(current + 1, count);
 }

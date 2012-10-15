@@ -12,21 +12,18 @@ using namespace Upp;
 #define IMAGEFILE <gg/gg.iml>
 #include <Draw/iml_header.h>
 
-class GameGate : public WithGameGateLayout<TopWindow> 
-{
-public:
-	typedef GameGate CLASSNAME;
-	GameGate();
-};
-
 
 class MathTest : public WithMathTestLayout<TopWindow> 
 {
 public:
 	typedef MathTest CLASSNAME;
 	
+	//enum { 
+	//	TID_LOADTOPICS = 1000
+	//};
+	
 	MathTest();
-	void Begin();
+	void Start();
 	void InitTopics();
 	void LoadTopics();
 	
@@ -46,6 +43,23 @@ protected:
 	int count;
 	int current;
 
+};
+
+class GameGate : public WithGameGateLayout<TopWindow> 
+{
+public:
+	typedef GameGate CLASSNAME;
+	GameGate();
+	
+	void Start();
+	void Conf();
+	void Skip();
+	void Pwd();
+	void Serialize(Stream& s);
+
+protected:
+	String   password;
+	//MathTest mt;
 };
 
 #endif
